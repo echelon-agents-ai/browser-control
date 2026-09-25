@@ -1,0 +1,17 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>BUE slack-icon-upload fixture</title></head>
+<body style="font-family: sans-serif;">
+  <h1>App icon</h1>
+  <!-- Mimics Slack's app-settings icon uploader: a visually hidden <input type=file> triggered by a
+       visible "Upload Image" button (the same click-hidden-input-then-set-files pattern real Slack
+       uses), plus a filename readout so we can assert the choose worked. -->
+  <input id="icon-file-input" type="file" accept="image/png" style="position:absolute; width:1px; height:1px; opacity:0; overflow:hidden;">
+  <button id="upload-btn" onclick="document.getElementById('icon-file-input').click()">Upload Image</button>
+  <p id="chosen-name">no file chosen</p>
+  <script>
+    document.getElementById('icon-file-input').addEventListener('change', (e) => {
+      const f = e.target.files && e.target.files[0];
+      document.getElementById('chosen-name').textContent = f ? f.name : 'no file chosen';
+    });
+  </script>
+</body></html>

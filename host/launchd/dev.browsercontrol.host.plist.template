@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  launchd TEMPLATE for the Browser Control host DAEMON (one per Mac).
+
+  This is a TEMPLATE, not an installed plist. Replace the __PLACEHOLDERS__ and copy the result to
+  ~/Library/LaunchAgents/dev.browsercontrol.host.plist, then:
+      launchctl load ~/Library/LaunchAgents/dev.browsercontrol.host.plist
+
+  One-daemon-per-Mac model (architecture doc §3): the launchd job runs the long-lived DAEMON
+  (dist/daemon/index.js). It is NOT the native-messaging endpoint Chrome talks to — Chrome spawns the
+  stdio SHIM (dist/shim/index.js) per connectNative, and the shim relays to this daemon over the Unix
+  socket at ~/Library/Application Support/BrowserControl/host.sock. Do not point the native-
+  messaging manifest at this daemon; point it at the shim (see daemon/installManifest.ts).
+
+  Secrets: the bearer-token map is read from a 0600 file (BUE_KEYS_PATH) by default, or from AWS
+  Secrets Manager when BUE_AUTH_SOURCE=aws-secrets-manager. Never hardcode a credential in this plist.
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>dev.browsercontrol.host</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>__NODE_BIN__</string>            <!-- e.g. /usr/local/bin/node -->
+    <string>__INSTALL_DIR__/dist/daemon/index.js</string>
+  </array>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>BUE_MCP_PORT</key>
+    <string>8787</string>
+    <key>BUE_ALLOWLIST_PATH</key>
+    <string>__INSTALL_DIR__/allowlist.local.json</string>
+    <!-- Default auth source: a local { tenantName: bearerToken } JSON file, mode 0600. -->
+    <key>BUE_KEYS_PATH</key>
+    <string>__STATE_DIR__/tenant-keys.json</string>
+    <!-- Optional: BUE_AUTH_SOURCE=aws-secrets-manager + BUE_KEYS_SECRET_NAME=your-secret-name. -->
+    <!-- OP_SERVICE_ACCOUNT_TOKEN (for vault_fill) is supplied by a launcher script, NOT stored here. -->
+  </dict>
+
+  <key>KeepAlive</key>
+  <true/>
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StandardOutPath</key>
+  <string>__INSTALL_DIR__/logs/host.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>__INSTALL_DIR__/logs/host.err.log</string>
+</dict>
+</plist>

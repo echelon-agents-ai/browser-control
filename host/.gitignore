@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.local.json
+tenant-keys*.local.json
+token-map*.local.json
+allowlist*.local.json
+.env
+.env.*

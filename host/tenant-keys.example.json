@@ -1,0 +1,4 @@
+{
+  "acme-agent": "dev-bearer-token-for-acme-agent",
+  "beta-agent": "dev-bearer-token-for-beta-agent"
+}

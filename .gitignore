@@ -1,0 +1,26 @@
+node_modules
+dist
+*.log
+.DS_Store
+.vite
+test-results
+playwright-report
+dist-test
+
+# acceptance run artifacts (screenshots + receipts)
+acceptance/out/
+acceptance/node_modules
+
+# bue-input compiled binary + build hash (rebuilt by native/build.sh; never versioned)
+host/native/bue-input/bue-input
+host/native/bue-input/.built-source.sha256
+
+# your extension signing key (npm run gen-key) — never commit
+.keys/
+*.pem
+# local host config / token maps
+host.config.json
+tenant-keys*.json
+!host/tenant-keys.example.json
+.env
+.env.*

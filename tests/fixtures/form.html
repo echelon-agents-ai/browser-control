@@ -1,0 +1,22 @@
+<!doctype html>
+<html><head><title>BUE form fixture</title></head>
+<body>
+<h1>Form fixture</h1>
+<label>Fruit <select id="fruit" aria-label="Fruit"><option value="apple">Apple</option><option value="pear">Pear</option></select></label>
+<label><input id="agree" type="checkbox" aria-label="Agree"> Agree</label>
+<label>Nickname <input id="nick" aria-label="Nickname"></label>
+<label>Password <input id="pw" type="password" aria-label="Password" value="hunter2secret"></label>
+<label>Card <input id="cc" autocomplete="cc-number" aria-label="Card" value="4242424242424242"></label>
+<label>Code <input id="otp" autocomplete="one-time-code" aria-label="Code" value="123456"></label>
+<div id="hoverMe" style="width:200px;height:40px;background:#ddd" role="button" aria-label="Hover target">hover me</div>
+<span id="hoverOut"></span>
+<div style="height:3000px"></div>
+<button id="far" aria-label="Far button">Far button</button>
+<pre id="events"></pre>
+<script>
+  const log = [];
+  for (const id of ['fruit', 'agree', 'nick']) for (const t of ['input', 'change'])
+    document.getElementById(id).addEventListener(t, () => { log.push(id + ':' + t); document.getElementById('events').textContent = log.join(','); });
+  document.getElementById('hoverMe').addEventListener('mouseover', (e) => { document.getElementById('hoverOut').textContent = 'hovered:' + e.isTrusted; });
+</script>
+</body></html>

@@ -1,0 +1,14 @@
+{
+  "name": "browser-control-acceptance",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Acceptance scenarios for the Browser Control MCP host (screenshot/find/computer over Streamable HTTP).",
+  "scripts": {
+    "list": "node run.mjs",
+    "accept": "node run.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.1"
+  }
+}

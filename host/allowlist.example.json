@@ -1,0 +1,4 @@
+{
+  "acme": { "acme-vault": true },
+  "beta": { "shared-vault": ["item-abc123", "item-def456"] }
+}

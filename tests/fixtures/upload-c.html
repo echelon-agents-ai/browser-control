@@ -1,0 +1,20 @@
+<!doctype html>
+<html><head><title>Upload C</title></head>
+<body>
+<!-- Real-world pattern: the input is detached from the visible trigger — a <label for> wired to a
+     hidden input, not a click handler. Clicking the label still opens the real native chooser
+     (native browser behaviour), so this is the chooser path, not nearest-input. -->
+<div class="toolbar">
+  <label id="attach" for="file" class="button">Attach files</label>
+</div>
+<div class="hidden-region" style="display:none">
+  <input id="file" type="file" multiple aria-label="Upload">
+</div>
+<span id="out"></span>
+<script>
+  document.getElementById('file').addEventListener('change', (e) => {
+    const names = Array.from(e.target.files).map((f) => f.name + ':' + f.size).join(',');
+    document.getElementById('out').textContent = 'change:' + names;
+  });
+</script>
+</body></html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html><head><title>BUE fixture</title>
+<style>#menu{display:none;border:1px solid #888;padding:4px}#menu.open{display:block}</style></head>
+<body>
+<h1>BUE fixture</h1>
+<button id="plain" onclick="document.getElementById('plainOut').textContent='clicked'">Plain button</button>
+<span id="plainOut"></span>
+<div>
+  <!-- Custom dropdown: opens ONLY on a trusted (real input) click, like the EGO-problem widgets. -->
+  <button id="dd" aria-haspopup="listbox" aria-expanded="false">Choose fruit</button>
+  <ul id="menu" role="listbox"><li role="option">Apple</li><li role="option">Pear</li></ul>
+  <span id="ddLog"></span>
+</div>
+<label>Name <input id="name" type="text" aria-label="Name"></label>
+<label>Upload <input id="file" type="file" aria-label="Upload"></label>
+<span id="fileOut"></span>
+<iframe id="frame" src="/frame.html" title="inner frame" width="300" height="80"></iframe>
+<script>
+  const dd = document.getElementById('dd');
+  dd.addEventListener('click', (e) => {
+    document.getElementById('ddLog').textContent = 'isTrusted=' + e.isTrusted;
+    if (!e.isTrusted) return;
+    document.getElementById('menu').classList.add('open');
+    dd.setAttribute('aria-expanded', 'true');
+  });
+  document.getElementById('file').addEventListener('change', (e) => {
+    const f = e.target.files[0];
+    document.getElementById('fileOut').textContent = f ? ('change:' + f.name + ':' + f.size) : 'change:none';
+  });
+</script>
+</body></html>

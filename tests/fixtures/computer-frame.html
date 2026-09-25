@@ -1,0 +1,27 @@
+<!doctype html>
+<html><head><title>Card frame</title>
+<style>
+  body { margin: 0; padding: 10px; font: 24px monospace; background: #fff; }
+  input { font: 24px monospace; width: 420px; height: 40px; display: block; margin: 6px 0; color: #000; background: #fff; border: 1px solid #888; }
+  #ctl { font: 24px monospace; height: 40px; }
+  button { font-size: 18px; }
+  #colorbox { position: fixed; top: 2px; right: 2px; width: 30px; height: 30px; background: rgb(0, 160, 0); }
+</style></head>
+<body>
+<input id="cardnumber" name="cardnumber" type="text" aria-label="Card number">
+<input id="memo" name="memo" type="text" aria-label="Memo">
+<input id="notes" name="notes" type="text" aria-label="Notes">
+<div id="ctl">4242 4242 4242 4242</div>
+<button id="fbtn" aria-label="Frame button">Frame button</button>
+<div id="colorbox"></div>
+<script>
+  const rect = (id) => { const r = document.getElementById(id).getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height }; };
+  const send = () => parent.postMessage({ type: 'rects', rects: Object.fromEntries(['cardnumber', 'memo', 'notes', 'ctl', 'fbtn', 'colorbox'].map((id) => [id, rect(id)])) }, '*');
+  document.getElementById('fbtn').addEventListener('click', (e) => parent.postMessage({ type: 'click', trusted: e.isTrusted, origin: location.origin }, '*'));
+  window.addEventListener('message', (e) => {
+    if (e.data && e.data.cmd === 'hideCtl') { document.getElementById('ctl').style.visibility = 'hidden'; send(); }
+    if (e.data && e.data.cmd === 'rects') send();
+  });
+  send();
+</script>
+</body></html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  launchd TEMPLATE for bue-input's OWN long-running `serve` process (one per Mac).
+
+  This is a SEPARATE LaunchAgent from dev.browsercontrol.host — deliberately. bue-input
+  issues real CGEvents and needs macOS Accessibility (TCC) permission; that grant is keyed to the
+  RESPONSIBLE process, and a process spawned as a child of `node` inherits node's responsibility.
+  Running bue-input as its own launchd job gives it a stable, independently-identifiable process
+  that a human can grant Accessibility to ONCE and have the grant survive daemon restarts, node
+  upgrades, and bue-input rebuilds (as long as it keeps being signed with the same identifier —
+  see native/build.sh).
+
+  Install: replace __PLACEHOLDERS__ and copy to ~/Library/LaunchAgents/dev.browsercontrol.input.plist,
+  then: launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/dev.browsercontrol.input.plist
+  (scripts/install-mac.sh does this for you.)
+
+  The daemon (nativeInput.ts) talks to this process over the Unix domain socket at
+  __SOCKET_PATH__ (default: ~/Library/Application Support/BrowserControl/state/bue-input.sock),
+  never by spawning bue-input directly.
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>dev.browsercontrol.input</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>__BUE_INPUT_BIN__</string>            <!-- e.g. __INSTALL_DIR__/host/native/bue-input/bue-input -->
+    <string>serve</string>
+    <string>--socket</string>
+    <string>__SOCKET_PATH__</string>              <!-- e.g. ~/Library/Application Support/BrowserControl/state/bue-input.sock -->
+  </array>
+
+  <key>KeepAlive</key>
+  <true/>
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StandardOutPath</key>
+  <string>__LOG_DIR__/bue-input.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>__LOG_DIR__/bue-input.err.log</string>
+</dict>
+</plist>

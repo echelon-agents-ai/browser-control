@@ -1,0 +1,44 @@
+<!doctype html>
+<html><head><title>Computer fixture</title>
+<style>
+  body { margin: 0; font: 16px system-ui, sans-serif; background: #fff; }
+  #btn { position: absolute; left: 40px; top: 40px; width: 160px; height: 50px; }
+  #box { position: absolute; left: 300px; top: 40px; width: 80px; height: 80px; background: #2a6; }
+  #zoomTarget { position: absolute; left: 600px; top: 40px; width: 200px; height: 100px; background: rgb(0, 0, 255); }
+  #form1 { position: absolute; left: 40px; top: 160px; }
+  #form1 input { font-size: 20px; width: 220px; }
+  #pw { position: absolute; left: 40px; top: 260px; font-size: 20px; width: 260px; height: 36px; }
+  #f { position: absolute; left: 40px; top: 330px; width: 640px; height: 300px; border: 0; padding: 0; }
+  #tall { position: absolute; top: 0; left: 0; width: 1px; height: 4000px; }
+</style></head>
+<body>
+<div id="tall"></div>
+<button id="btn">Target button</button>
+<div id="box"></div>
+<div id="zoomTarget"></div>
+<form id="form1"><input id="t1" aria-label="First"> <input id="t2" aria-label="Second"> <button id="sub" type="submit">Go</button></form>
+<input id="pw" type="password" aria-label="Password">
+<iframe id="f" src="__OTHER_ORIGIN__/computer-frame.html" title="card frame"></iframe>
+<script>
+  window.__log = [];
+  const log = (e) => window.__log.push(e);
+  const btn = document.getElementById('btn');
+  btn.addEventListener('click', (e) => log({ ev: 'click', trusted: e.isTrusted, detail: e.detail, shift: e.shiftKey }));
+  btn.addEventListener('contextmenu', (e) => { e.preventDefault(); log({ ev: 'contextmenu', trusted: e.isTrusted }); });
+  btn.addEventListener('dblclick', (e) => log({ ev: 'dblclick', trusted: e.isTrusted }));
+  // pointer-driven draggable box
+  const box = document.getElementById('box');
+  let drag = null;
+  box.addEventListener('mousedown', (e) => { drag = { dx: e.clientX - box.offsetLeft, dy: e.clientY - box.offsetTop }; });
+  window.addEventListener('mousemove', (e) => { if (drag && (e.buttons & 1)) { box.style.left = (e.clientX - drag.dx) + 'px'; box.style.top = (e.clientY - drag.dy) + 'px'; } });
+  window.addEventListener('mouseup', () => { drag = null; });
+  document.getElementById('form1').addEventListener('submit', (e) => { e.preventDefault(); log({ ev: 'submit', trusted: e.isTrusted }); });
+  window.__frameRects = null;
+  window.__frameClicks = [];
+  window.addEventListener('message', (e) => {
+    if (!e.origin.startsWith('http://localhost:')) return;
+    if (e.data.type === 'rects') window.__frameRects = e.data.rects;
+    if (e.data.type === 'click') window.__frameClicks.push(e.data);
+  });
+</script>
+</body></html>

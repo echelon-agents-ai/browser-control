@@ -1,0 +1,27 @@
+<!doctype html>
+<html><head><title>Pay frame</title></head>
+<body>
+<label>Card number <input id="card" autocomplete="cc-number" aria-label="Card number"></label><br>
+<label>Holder <input id="holder" aria-label="Holder name"></label><br>
+<label>Country <select id="country" aria-label="Country"><option value="us">United States</option><option value="ca">Canada</option></select></label><br>
+<label><input id="save" type="checkbox" aria-label="Save card"> Save card</label><br>
+<button id="pay" aria-label="Pay now">Pay</button>
+<script>
+  const ev = { input: 0, change: 0 };
+  for (const id of ['holder', 'country', 'save']) {
+    document.getElementById(id).addEventListener('input', () => ev.input++);
+    document.getElementById(id).addEventListener('change', () => ev.change++);
+  }
+  document.getElementById('pay').addEventListener('click', (e) => {
+    parent.postMessage({
+      trusted: e.isTrusted,
+      cardLen: document.getElementById('card').value.length,
+      holder: document.getElementById('holder').value,
+      country: document.getElementById('country').value,
+      save: document.getElementById('save').checked,
+      ev,
+      origin: location.origin,
+    }, '*');
+  });
+</script>
+</body></html>

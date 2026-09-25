@@ -1,0 +1,18 @@
+<!doctype html>
+<html><head><title>Upload F</title></head>
+<body>
+<!-- A button that does NOT call input.click() (and has no label/for wiring either) — no chooser
+     ever opens. But a display:none <input type=file> sits right next to it, inside the same
+     container, so the nearest-input fallback should find and use it. -->
+<div class="toolbar">
+  <button id="attach" type="button">Attach files</button>
+  <input id="file" type="file" multiple aria-label="Upload" style="display:none">
+</div>
+<span id="out"></span>
+<script>
+  document.getElementById('file').addEventListener('change', (e) => {
+    const names = Array.from(e.target.files).map((f) => f.name + ':' + f.size).join(',');
+    document.getElementById('out').textContent = 'change:' + names;
+  });
+</script>
+</body></html>

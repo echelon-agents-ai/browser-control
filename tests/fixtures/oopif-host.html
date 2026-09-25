@@ -1,0 +1,15 @@
+<!doctype html>
+<html><head><title>OOPIF host</title></head>
+<body style="margin:0;padding:20px">
+<h1>Checkout</h1>
+<p>Card form below is served from another site (out-of-process iframe).</p>
+<div style="height:150px"></div>
+<iframe id="pay" src="__OTHER_ORIGIN__/oopif.html" title="payment frame" width="420" height="260" style="border:6px solid #444;padding:4px"></iframe>
+<pre id="oopifOut"></pre>
+<script>
+  window.addEventListener('message', (e) => {
+    if (!e.origin.startsWith('http://localhost:')) return;
+    document.getElementById('oopifOut').textContent = JSON.stringify(e.data);
+  });
+</script>
+</body></html>

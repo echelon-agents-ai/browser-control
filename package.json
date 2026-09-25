@@ -1,0 +1,24 @@
+{
+  "name": "browser-control",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Browser Control: open-source, agent-first Chrome extension and MCP host.",
+  "type": "module",
+  "scripts": {
+    "build": "vite build --mode production",
+    "dev": "vite",
+    "test": "npm run build && npm run build:test && playwright test",
+    "typecheck": "tsc -p .",
+    "build:test": "vite build --mode test",
+    "gen-key": "node scripts/gen-extension-key.mjs"
+  },
+  "devDependencies": {
+    "@crxjs/vite-plugin": "^2.0.0-beta.23",
+    "@playwright/test": "^1.63.0",
+    "@types/chrome": "^0.3.0",
+    "@types/node": "^26.6.2",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2"
+  },
+  "license": "MIT"
+}
