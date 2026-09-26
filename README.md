@@ -1,7 +1,8 @@
 # Browser Control
 
-**An open-source alternative to Claude in Chrome.** Browser Control is a Chrome extension plus a
-small local host that lets AI agents drive a real, headful Chrome over MCP: they look at a
+**Open-source browser control for AI agents: an MCP server plus a Chrome extension, with
+vision-first control, multi-agent tabs, vault-filled logins and human handoff.** Browser Control is a
+Chrome extension plus a small local host that lets AI agents drive a real, headful Chrome over MCP: they look at a
 screenshot and act at x/y, the way a person does. It is built for running several agents at once,
 each in its own browser profile, with credentials filled from your password manager rather than
 typed by the model.
@@ -118,8 +119,8 @@ service-account token via `OP_TOKEN_FILE=/path/to/token` when running the instal
 | `tenant_start` / `tenant_stop` / `tenant_status` / `health` | lifecycle of the caller's own browser profile |
 | `version` | build version and tool registry |
 
-Tool names and argument shapes follow Claude in Chrome's where one exists, so agents written for it
-need few changes. A few of its tools (`gif_creator`, `upload_image`, `shortcuts_*`, `resize_window`,
+Tool names and argument shapes are compatible with Claude in Chrome's MCP surface where an equivalent
+exists. A few of those tools (`gif_creator`, `upload_image`, `shortcuts_*`, `resize_window`,
 multi-browser pairing) return `NOT_IMPLEMENTED` today.
 
 ## Comparison
